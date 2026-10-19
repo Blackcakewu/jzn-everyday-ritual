@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="assets/qrcode.min.js" defer></script>
 </head>
 <body>
   <div class="grain" aria-hidden="true"></div>
@@ -22,7 +23,7 @@
       <a href="#moments">挑選時刻</a>
       <a href="#collection">日常漢餅</a>
       <a href="#story">品牌理念</a>
-      <a class="nav-cta" href="#finder">找一份剛好的禮</a>
+      <a class="nav-cta" href="#finder">體驗 Ritual AI</a>
     </nav>
   </header>
 
@@ -96,46 +97,83 @@
       </div>
     </section>
 
-    <section class="finder section" id="finder">
+    <section class="finder ritual-demo section" id="finder">
       <div class="finder-intro reveal">
-        <p class="eyebrow">TODAY'S GIFT FINDER</p>
-        <h2>今天，想為什麼<br>送上一份心意？</h2>
-        <p>選一個最接近的情境，我們會替你搭配禮盒與一句剛剛好的話。</p>
-        <div class="step-indicator"><strong id="step-number">01</strong><span>/ 02</span></div>
+        <p class="eyebrow">RITUAL AI・CLASSROOM DEMO</p>
+        <h2>把你們的故事，<br>變成一場小儀式。</h2>
+        <p>輸入兩人的故事與場合，Ritual AI 會解讀你最重視的價值，生成儀式腳本、祝福文字與漢餅組合。</p>
+        <div class="demo-flow" aria-label="體驗流程">
+          <span class="active">1 故事</span><span>2 價值</span><span>3 儀式</span><span>4 專屬頁</span>
+        </div>
+        <div class="step-indicator"><strong id="step-number">01</strong><span>/ 04</span></div>
       </div>
 
       <div class="finder-panel reveal">
         <div class="finder-step active" data-step="1">
-          <p class="question-label">選一個今天的心情</p>
-          <div class="choice-grid">
-            <button type="button" class="choice" data-mood="cheer" data-label="替你打氣"><span>✦</span>替你打氣</button>
-            <button type="button" class="choice" data-mood="meet" data-label="好久不見"><span>◯</span>好久不見</button>
-            <button type="button" class="choice" data-mood="thanks" data-label="想說謝謝"><span>⌁</span>想說謝謝</button>
-            <button type="button" class="choice" data-mood="new" data-label="新的開始"><span>↗</span>新的開始</button>
+          <p class="question-label">01・說說你們的故事</p>
+          <label class="field-label" for="story-input">你們之間發生了什麼？</label>
+          <textarea id="story-input" rows="5" placeholder="例如：我們是大學同學。她最近終於完成第一份大型提案，我想謝謝她一直以來也總是替我打氣。"></textarea>
+          <div class="occasion-group">
+            <span class="field-label">這次的場合</span>
+            <div class="occasion-chips">
+              <button type="button" class="occasion selected" data-occasion="完成挑戰">完成挑戰</button>
+              <button type="button" class="occasion" data-occasion="久別重逢">久別重逢</button>
+              <button type="button" class="occasion" data-occasion="新的開始">新的開始</button>
+              <button type="button" class="occasion" data-occasion="單純想念">單純想念</button>
+            </div>
           </div>
+          <button class="button button-primary demo-next" type="button">讓 AI 讀懂這份心意 <span>→</span></button>
+          <p class="form-hint" id="story-error" aria-live="polite"></p>
         </div>
 
         <div class="finder-step" data-step="2">
           <button class="back-button" type="button">← 回上一題</button>
-          <p class="question-label">這份禮，想送給誰？</p>
-          <div class="choice-grid recipients">
-            <button type="button" class="recipient" data-person="朋友">朋友</button>
-            <button type="button" class="recipient" data-person="同事">同事</button>
-            <button type="button" class="recipient" data-person="家人">家人</button>
-            <button type="button" class="recipient" data-person="自己">自己</button>
+          <p class="question-label">02・AI VALUE ENGINE</p>
+          <div class="ai-thinking" aria-hidden="true"><i></i><i></i><i></i><span>正在連結故事、場合與漢餅文化…</span></div>
+          <div class="value-result">
+            <p>這段故事裡，最重要的是</p>
+            <h3 id="value-title">陪伴與肯定</h3>
+            <p id="value-copy">你想慶祝的不只是成果，而是彼此一路接住對方的默契。</p>
+            <div class="value-tags" id="value-tags"><span>陪伴</span><span>成就</span><span>感謝</span></div>
           </div>
+          <button class="button button-primary value-next" type="button">生成新式儀式 <span>→</span></button>
         </div>
 
-        <div class="finder-result" aria-live="polite">
-          <div class="result-product"><span id="result-glyph">好</span></div>
-          <div>
-            <p class="question-label">今天適合這一盒</p>
-            <h3 id="result-title">元氣正好・三入禮盒</h3>
-            <p id="result-copy">桂圓、芝麻與柑橘三款小漢餅，替平凡的一天補上一點甜。</p>
-            <blockquote id="result-message">「你已經做得很好，慢慢來也沒關係。」</blockquote>
-            <button class="button button-primary restart-button" type="button">再選一次 <span>↻</span></button>
+        <div class="finder-step" data-step="3">
+          <button class="back-button" type="button">← 回到價值解讀</button>
+          <p class="question-label">03・你的新式儀式腳本</p>
+          <div class="ritual-script">
+            <div><b>01</b><span><strong>找一個不用趕時間的晚上</strong><small>泡一壺茶，把手機暫時收起來。</small></span></div>
+            <div><b>02</b><span><strong id="ritual-action">一起拆開「慢慢來」禮盒</strong><small>每吃一塊餅，輪流說一件想謝謝對方的事。</small></span></div>
+            <div><b>03</b><span><strong>留下今天的一句話</strong><small id="ritual-message">「你做到了，而我很開心一路都在。」</small></span></div>
           </div>
+          <div class="recommendation-mini">
+            <div class="mini-pastry" id="result-glyph">好</div>
+            <div><small>AI 推薦漢餅組合</small><h3 id="result-title">元氣正好・三入概念禮盒</h3><p id="result-copy">綠豆椪・鳳梨酥・核桃杏香酥</p></div>
+          </div>
+          <button class="button button-primary story-next" type="button">建立專屬故事頁 <span>→</span></button>
         </div>
+
+        <div class="finder-step" data-step="4">
+          <button class="back-button" type="button">← 回到儀式腳本</button>
+          <p class="question-label">04・QR DIGITAL MEMORY</p>
+          <div class="memory-result">
+            <div class="qr-wrap"><div id="story-qr" role="img" aria-label="專屬故事頁 QR Code"></div><span>SCAN THE STORY</span></div>
+            <div><p class="memory-kicker" id="memory-occasion">完成挑戰的日子</p><h3 id="memory-title">這一次，換我替你打氣。</h3><p>把這張 QR 小卡放進禮盒。收到的人掃描後，就能看見你們的故事、專屬祝福與今天的儀式。</p><a class="text-link memory-preview" href="#memory">預覽專屬故事頁 →</a></div>
+          </div>
+          <button class="button button-primary restart-button" type="button">製作另一份心意 <span>↻</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="memory-page section" id="memory">
+      <p class="eyebrow">A MEMORY MADE FOR YOU</p>
+      <div class="memory-page-inner">
+        <span class="memory-date">日常一刻・專屬故事</span>
+        <h2 id="memory-page-title">這一次，換我替你打氣。</h2>
+        <p id="memory-page-story">你們的故事會在完成體驗後出現在這裡。</p>
+        <blockquote id="memory-page-message">「一起吃一塊餅，也一起記住今天。」</blockquote>
+        <div class="memory-signature">舊振南・Ritual AI 概念體驗</div>
       </div>
     </section>
 
