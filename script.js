@@ -25,10 +25,10 @@ const observer = new IntersectionObserver((entries) => {
 reveals.forEach((item) => observer.observe(item));
 
 const recommendations = {
-  '完成挑戰': { value: '陪伴與肯定', detail: '你想慶祝的不只是成果，而是彼此一路接住對方的默契。', tags: ['陪伴','成就','感謝'], title: '時光漢餅 8 入禮盒', copy: '鳳梨小漢餅 4 入・烏豆沙小漢餅 4 入', message: '你做到了，而我很開心一路都在。', glyph: '好', url: 'https://shop.jzn.com.tw/zh-hant/products/thsr-mini-pastry-collection' },
-  '久別重逢': { value: '連結與珍惜', detail: '時間讓你們走向不同生活，但再見面時仍想好好接住彼此。', tags: ['重逢','陪伴','回憶'], title: '巧饌禮盒', copy: '鳳梨酥・太陽餅', message: '日子各自忙碌，見到你還是很好。', glyph: '聚', url: 'https://shop.jzn.com.tw/zh-hant/products/asap-exquisite-pastry-gift-box' },
-  '新的開始': { value: '勇氣與祝福', detail: '你想讓對方知道，新的選擇有人理解，也有人真心期待。', tags: ['勇氣','成長','祝福'], title: '喜事好合禮盒', copy: '八兩漢餅 2 入・棗泥核桃糕', message: '新的日子，願每一步都有好事發生。', glyph: '喜', url: 'https://shop.jzn.com.tw/zh-hant/products/new-double-hapiness-joy-wedding-gift-box' },
-  '單純想念': { value: '思念與在乎', detail: '不需要特殊理由，你只是想讓對方在普通的一天感受到被記得。', tags: ['想念','日常','溫柔'], title: '四季糕禮盒', copy: '杏仁糕・芝麻糕・綠豆糕・梅子糕', message: '沒有特別的日子，只是今天剛好想起你。', glyph: '念', url: 'https://shop.jzn.com.tw/zh-hant/products/four-seasons-pastry-gift-box' }
+  '完成挑戰': { value: '陪伴與肯定', detail: '你想慶祝的不只是成果，而是彼此一路接住對方的默契。', tags: ['陪伴','成就','感謝'], title: '時光漢餅 8 入禮盒', copy: '鳳梨小漢餅 4 入・烏豆沙小漢餅 4 入', price: 'NT$750', image: 'assets/product-thsr.webp', message: '你做到了，而我很開心一路都在。', url: 'https://shop.jzn.com.tw/zh-hant/products/thsr-mini-pastry-collection' },
+  '久別重逢': { value: '連結與珍惜', detail: '時間讓你們走向不同生活，但再見面時仍想好好接住彼此。', tags: ['重逢','陪伴','回憶'], title: '巧饌禮盒', copy: '鳳梨酥・太陽餅', price: 'NT$700', image: 'assets/product-exquisite.webp', message: '日子各自忙碌，見到你還是很好。', url: 'https://shop.jzn.com.tw/zh-hant/products/asap-exquisite-pastry-gift-box' },
+  '新的開始': { value: '勇氣與祝福', detail: '你想讓對方知道，新的選擇有人理解，也有人真心期待。', tags: ['勇氣','成長','祝福'], title: '喜事好合禮盒', copy: '八兩漢餅 2 入・棗泥核桃糕', price: 'NT$880', image: 'assets/product-harmony.webp', message: '新的日子，願每一步都有好事發生。', url: 'https://shop.jzn.com.tw/zh-hant/products/new-double-hapiness-joy-wedding-gift-box' },
+  '單純想念': { value: '思念與在乎', detail: '不需要特殊理由，你只是想讓對方在普通的一天感受到被記得。', tags: ['想念','日常','溫柔'], title: '四季糕禮盒', copy: '杏仁糕・芝麻糕・綠豆糕・梅子糕', price: 'NT$360', image: 'assets/product-seasons.webp', message: '沒有特別的日子，只是今天剛好想起你。', url: 'https://shop.jzn.com.tw/zh-hant/products/four-seasons-pastry-gift-box' }
 };
 
 let selectedOccasion = '完成挑戰';
@@ -58,9 +58,11 @@ function applyRecommendation() {
   document.querySelector('#value-tags').innerHTML = pick.tags.map((tag) => `<span>${tag}</span>`).join('');
   document.querySelector('#result-title').textContent = pick.title;
   document.querySelector('#result-copy').textContent = pick.copy;
+  document.querySelector('#result-price').textContent = pick.price;
+  document.querySelector('#result-image').src = pick.image;
+  document.querySelector('#result-image').alt = `舊振南${pick.title}`;
   document.querySelector('#result-link').href = pick.url;
-  document.querySelector('#result-glyph').textContent = pick.glyph;
-  document.querySelector('#ritual-action').textContent = `一起拆開「${pick.title.replace(/・.*$/, '')}」禮盒`;
+  document.querySelector('#ritual-action').textContent = `一起打開「${pick.title}」`;
   document.querySelector('#ritual-message').textContent = `「${pick.message}」`;
   document.querySelector('#memory-occasion').textContent = `${selectedOccasion}的日子`;
   document.querySelector('#memory-title').textContent = pick.message;
